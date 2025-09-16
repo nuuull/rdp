@@ -24,7 +24,9 @@ jobs:
     - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - env:
         PASS: ${{ secrets.PASS }}
-      run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "$env:PASS" -Force)
+      run: | 
+        Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "$env:PASS" -Force)
+        Restart-Service audiosrv -Force -Confirm
 
     - name: Start Playit and Set Up RDP Tunnel
       env:
